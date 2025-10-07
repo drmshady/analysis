@@ -22,6 +22,7 @@ def perform_technical_analysis(df):
 
   # Calculate SMA
   df.ta.sma(length=20, append=True)
+  df.ta.sma(length=50, append=True) # Add 50-day SMA
 
   # Calculate RSI
   df.ta.rsi(length=14, append=True)
@@ -33,7 +34,7 @@ def perform_technical_analysis(df):
   df.ta.bbands(append=True)
 
   # Add Average True Range
-  df.ta.atr(append=True)
+  df.ta.atr(length=14, append=True) # Explicitly set ATR length
 
   return df
 
@@ -109,9 +110,12 @@ if analyze_button and stock_symbol:
                 fig, ax = plt.subplots(figsize=(12, 6))
                 ax.plot(technical_analysis_results.index, technical_analysis_results['Close'], label='Close Price')
 
-                # Plot SMA
+                # Plot SMAs
                 if 'SMA_20' in technical_analysis_results.columns:
                     ax.plot(technical_analysis_results.index, technical_analysis_results['SMA_20'], label='SMA (20)', color='orange')
+                if 'SMA_50' in technical_analysis_results.columns:
+                    ax.plot(technical_analysis_results.index, technical_analysis_results['SMA_50'], label='SMA (50)', color='purple')
+
 
                 # Plot Bollinger Bands
                 if 'BBL_5,2.0' in technical_analysis_results.columns and 'BBM_5,2.0' in technical_analysis_results.columns and 'BBU_5,2.0' in technical_analysis_results.columns:
@@ -125,6 +129,32 @@ if analyze_button and stock_symbol:
                 ax.set_ylabel("Price")
                 ax.legend()
                 st.pyplot(fig)
+
+                # Display RSI and MACD in separate plots or text
+                st.subheader("Momentum Indicators")
+                if 'RSI_14' in technical_analysis_results.columns:
+                    st.write(f"**RSI (14):** {technical_analysis_results['RSI_14'].iloc[-1]:.2f}")
+                    fig_rsi, ax_rsi = plt.subplots(figsize=(12, 3))
+                    ax_rsi.plot(technical_analysis_results.index, technical_analysis_results['RSI_14'], label='RSI (14)', color='blue')
+                    ax_rsi.axhline(70, color='red', linestyle='--', alpha=0.5)
+                    ax_rsi.axhline(30, color='green', linestyle='--', alpha=0.5)
+                    ax_rsi.set_title(f"{stock_symbol.upper()} RSI (14)")
+                    ax_rsi.set_xlabel("Date")
+                    ax_rsi.set_ylabel("RSI")
+                    st.pyplot(fig_rsi)
+
+
+                if 'MACDh_12_26_9' in technical_analysis_results.columns: # MACD Histogram
+                    st.write(f"**MACD Histogram:** {technical_analysis_results['MACDh_12_26_9'].iloc[-1]:.2f}")
+                    fig_macd, ax_macd = plt.subplots(figsize=(12, 3))
+                    ax_macd.bar(technical_analysis_results.index, technical_analysis_results['MACDh_12_26_9'], label='MACD Histogram', color='grey')
+                    ax_macd.plot(technical_analysis_results.index, technical_analysis_results['MACD_12_26_9'], label='MACD Line', color='blue')
+                    ax_macd.plot(technical_analysis_results.index, technical_analysis_results['MACDs_12_26_9'], label='Signal Line', color='red')
+                    ax_macd.set_title(f"{stock_symbol.upper()} MACD")
+                    ax_macd.set_xlabel("Date")
+                    ax_macd.set_ylabel("Value")
+                    ax_macd.legend()
+                    st.pyplot(fig_macd)
 
 
 
