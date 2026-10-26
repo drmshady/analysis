@@ -13,7 +13,7 @@ Writes to <output_dir>:
     data_tidy.csv   anonymised long-format data (patient IDs, no names)
     results.json    every number used in the report
     results.xlsx    all result tables, one sheet each
-    fig1_paired.png, fig2_scatter.png
+    fig1_paired.{png,tif,pdf}, fig2_scatter.{png,tif,pdf}  (600 dpi raster + vector)
 """
 
 import json
@@ -24,6 +24,9 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+# Keep text editable in the vector PDF figures.
+plt.rcParams["pdf.fonttype"] = 42
 import numpy as np
 import openpyxl
 import pandas as pd
@@ -46,6 +49,7 @@ MOVEMENT_LABELS = {
 }
 ACCEPTABLE_MM = 2.0
 ALPHA = 0.05
+FIG_DPI = 600
 
 COLOR_2D = "#2a78d6"
 COLOR_3D = "#eb6834"
@@ -277,7 +281,16 @@ def style_axes(ax):
     ax.set_axisbelow(True)
 
 
-def fig_paired(df, path):
+def save_figure(fig, stem):
+    """Save as 600 dpi PNG and LZW-compressed TIFF, plus a vector PDF."""
+    fig.savefig(stem.with_suffix(".png"), dpi=FIG_DPI, facecolor="white")
+    fig.savefig(stem.with_suffix(".tif"), dpi=FIG_DPI, facecolor="white",
+                pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(stem.with_suffix(".pdf"), facecolor="white")
+    plt.close(fig)
+
+
+def fig_paired(df, stem):
     fig, axes = plt.subplots(1, 3, figsize=(9, 3.6), sharey=True)
     ymax = max(df["error_2d"].max(), df["error_3d"].max()) * 1.08
     for ax, lm in zip(axes, LANDMARKS):
@@ -303,11 +316,10 @@ def fig_paired(df, path):
     fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False, fontsize=9,
                bbox_to_anchor=(0.5, 1.02))
     fig.tight_layout(rect=(0, 0, 1, 0.93))
-    fig.savefig(path, dpi=300, facecolor="white")
-    plt.close(fig)
+    save_figure(fig, stem)
 
 
-def fig_scatter(df, corr, path):
+def fig_scatter(df, corr, stem):
     fig, axes = plt.subplots(1, 3, figsize=(9, 3.4))
     lim = max(df["error_2d"].max(), df["error_3d"].max()) * 1.08
     r_by_lm = {c["landmark"]: c for c in corr}
@@ -331,8 +343,7 @@ def fig_scatter(df, corr, path):
         ax.set_xlabel("2D error (mm)", fontsize=9, color=INK)
     axes[0].set_ylabel("3D error (mm)", fontsize=9, color=INK)
     fig.tight_layout()
-    fig.savefig(path, dpi=300, facecolor="white")
-    plt.close(fig)
+    save_figure(fig, stem)
 
 
 def fmt_p(p):
@@ -383,8 +394,8 @@ def main(xlsx, out_dir):
         pd.DataFrame(rows).to_excel(xw, sheet_name="Between landmarks", index=False)
         pd.DataFrame(results["movement_correlation"]).to_excel(xw, sheet_name="Movement vs error", index=False)
 
-    fig_paired(df, out_dir / "fig1_paired.png")
-    fig_scatter(df, results["correlation"], out_dir / "fig2_scatter.png")
+    fig_paired(df, out_dir / "fig1_paired")
+    fig_scatter(df, results["correlation"], out_dir / "fig2_scatter")
     print(f"Wrote results for {df['patient'].nunique()} patients to {out_dir}")
 
 

@@ -149,6 +149,15 @@ function figure(file, widthIn, label, title) {
   ];
 }
 
+// Cited for the 2 mm clinical acceptability threshold (Vancouver style).
+const REFERENCES = [
+  "Kaipatur NR, Flores-Mir C. Accuracy of computer programs in predicting orthognathic surgery soft tissue response. J Oral Maxillofac Surg. 2009;67(4):751-9. doi:10.1016/j.joms.2008.11.006",
+  "Khambay B, Ullah R. Current methods of assessing the accuracy of three-dimensional soft tissue facial predictions: technical and clinical considerations. Int J Oral Maxillofac Surg. 2015;44(1):132-8. doi:10.1016/j.ijom.2014.04.007",
+  "Liebregts J, Xi T, Timmermans M, de Koning M, Bergé S, Hoppenreijs T, et al. Accuracy of three-dimensional soft tissue simulation in bimaxillary osteotomies. J Craniomaxillofac Surg. 2015;43(3):329-35. doi:10.1016/j.jcms.2014.12.012",
+  "Peterman RJ, Jiang S, Johe R, Mukherjee PM. Accuracy of Dolphin visual treatment objective (VTO) prediction software on class III patients treated with maxillary advancement and mandibular setback. Prog Orthod. 2016;17(1):19. doi:10.1186/s40510-016-0132-2",
+  "Yamashita AL, Iwaki Filho L, Ferraz FWDS, Ramos AL, Previdelli ITDS, Pereira OCN, et al. Accuracy of three-dimensional soft tissue profile prediction in orthognathic surgery. Oral Maxillofac Surg. 2022;26(2):271-9. doi:10.1007/s10006-021-00988-2",
+];
+
 // =====================================================================
 // Methodology
 // =====================================================================
@@ -163,7 +172,7 @@ const methods = [
   h2("Correlation between 2D and 3D planning"),
   para("The correlation between the 2D and 3D prediction errors at each landmark was assessed with Pearson's correlation coefficient (_r_). Spearman's rank correlation coefficient (_ρ_), which is robust to outliers, was reported alongside. Correlation strength was interpreted as weak (|_r_| < 0.3), moderate (0.3–0.7) or strong (> 0.7)."),
   h2("Clinical acceptability"),
-  para(`A prediction error of ≤ ${f(MM, 0)} mm was considered clinically acceptable. The proportions of clinically acceptable predictions with 2D and 3D planning were compared at each landmark with the exact McNemar test for paired proportions.`),
+  para(`A prediction error of ≤ ${f(MM, 0)} mm was considered clinically acceptable${MM === 2 ? ". This is the threshold most commonly used to judge the accuracy of soft-tissue prediction after orthognathic surgery, for both 2D and 3D planning (1–5), including Dolphin prediction in Class III patients treated with maxillary advancement and mandibular setback (4); it is a clinical convention rather than a statistically derived value" : ""}. The proportions of clinically acceptable predictions with 2D and 3D planning were compared at each landmark with the exact McNemar test for paired proportions.`),
   h2("Comparison among landmarks"),
   para("Differences in prediction error among the three landmarks were tested separately for each planning method with the Friedman test, followed by pairwise Wilcoxon signed-rank tests with Bonferroni correction."),
   h2("Planned movement and prediction error"),
@@ -407,6 +416,8 @@ const results = [
   note("_ρ_ = Spearman rank correlation coefficient; a movement that was not performed was entered as 0 mm. *Statistically significant (_p_ < 0.05)."),
 
   ...summary,
+  ...(MM === 2 ? [h1("References"), ...REFERENCES.map((r) =>
+    new Paragraph({ numbering: { reference: "refs", level: 0 }, children: runs(r), spacing: { after: 120, line: 276, lineRule: LineRuleType.AUTO } }))] : []),
 ];
 
 // =====================================================================
@@ -428,6 +439,10 @@ const doc = new Document({
   },
   numbering: {
     config: [{
+      reference: "refs",
+      levels: [{ level: 0, format: LevelFormat.DECIMAL, text: "%1.", alignment: AlignmentType.LEFT,
+        style: { paragraph: { indent: { left: 440, hanging: 440 } } } }],
+    }, {
       reference: "bullets",
       levels: [{ level: 0, format: LevelFormat.BULLET, text: "•", alignment: AlignmentType.LEFT,
         style: { paragraph: { indent: { left: 540, hanging: 300 } } } }],
