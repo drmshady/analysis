@@ -1,0 +1,523 @@
+{
+  "sample": {
+    "n_patients": 10,
+    "n_female": 6,
+    "n_male": 4,
+    "age": {
+      "n": 10,
+      "mean": 21.7,
+      "sd": 6.219146064997813,
+      "ci_low": 17.25109091316353,
+      "ci_high": 26.14890908683647,
+      "median": 20.0,
+      "q1": 19.0,
+      "q3": 21.0,
+      "min": 18.0,
+      "max": 39.0
+    },
+    "n_bimaxillary": 9,
+    "n_maxilla_only": 1,
+    "n_genioplasty": 7,
+    "max_advancement": {
+      "n": 10,
+      "mean": 6.8,
+      "sd": 1.8737959096740262,
+      "ci_low": 5.459567155635101,
+      "ci_high": 8.140432844364899,
+      "median": 6.0,
+      "q1": 6.0,
+      "q3": 7.5,
+      "min": 5.0,
+      "max": 10.0
+    },
+    "mand_setback": {
+      "n": 9,
+      "mean": 5.0,
+      "sd": 1.9364916731037085,
+      "ci_low": 3.511480731344805,
+      "ci_high": 6.488519268655195,
+      "median": 4.0,
+      "q1": 4.0,
+      "q3": 6.0,
+      "min": 3.0,
+      "max": 9.0
+    },
+    "genioplasty": {
+      "n": 7,
+      "mean": 4.857142857142857,
+      "sd": 0.8997354108424372,
+      "ci_low": 4.02502638781404,
+      "ci_high": 5.6892593264716735,
+      "median": 5.0,
+      "q1": 4.0,
+      "q3": 5.5,
+      "min": 4.0,
+      "max": 6.0
+    },
+    "patients": [
+      {
+        "patient": "P01",
+        "sex": "Female",
+        "age": 19,
+        "max_advancement": 6.0,
+        "mand_setback": 4.0,
+        "genioplasty": 4.0
+      },
+      {
+        "patient": "P02",
+        "sex": "Female",
+        "age": 18,
+        "max_advancement": 8.0,
+        "mand_setback": 4.0,
+        "genioplasty": 6.0
+      },
+      {
+        "patient": "P03",
+        "sex": "Female",
+        "age": 18,
+        "max_advancement": 5.0,
+        "mand_setback": 9.0,
+        "genioplasty": 0.0
+      },
+      {
+        "patient": "P04",
+        "sex": "Male",
+        "age": 20,
+        "max_advancement": 5.0,
+        "mand_setback": 7.0,
+        "genioplasty": 4.0
+      },
+      {
+        "patient": "P05",
+        "sex": "Female",
+        "age": 21,
+        "max_advancement": 6.0,
+        "mand_setback": 6.0,
+        "genioplasty": 5.0
+      },
+      {
+        "patient": "P06",
+        "sex": "Female",
+        "age": 19,
+        "max_advancement": 10.0,
+        "mand_setback": 3.0,
+        "genioplasty": 0.0
+      },
+      {
+        "patient": "P07",
+        "sex": "Male",
+        "age": 20,
+        "max_advancement": 6.0,
+        "mand_setback": 4.0,
+        "genioplasty": 6.0
+      },
+      {
+        "patient": "P08",
+        "sex": "Male",
+        "age": 39,
+        "max_advancement": 10.0,
+        "mand_setback": 0.0,
+        "genioplasty": 0.0
+      },
+      {
+        "patient": "P09",
+        "sex": "Male",
+        "age": 22,
+        "max_advancement": 6.0,
+        "mand_setback": 4.0,
+        "genioplasty": 4.0
+      },
+      {
+        "patient": "P10",
+        "sex": "Female",
+        "age": 21,
+        "max_advancement": 6.0,
+        "mand_setback": 4.0,
+        "genioplasty": 5.0
+      }
+    ]
+  },
+  "descriptive": [
+    {
+      "landmark": "Upper lip",
+      "method": "2D",
+      "n": 10,
+      "mean": 2.998,
+      "sd": 1.1950062761341465,
+      "ci_low": 2.1431440076891515,
+      "ci_high": 3.852855992310849,
+      "median": 2.95,
+      "q1": 2.625,
+      "q3": 3.3449999999999998,
+      "min": 1.1,
+      "max": 5.5
+    },
+    {
+      "landmark": "Upper lip",
+      "method": "3D",
+      "n": 10,
+      "mean": 1.6280000000000001,
+      "sd": 0.7726404942360537,
+      "ci_low": 1.0752862866156516,
+      "ci_high": 2.180713713384349,
+      "median": 1.855,
+      "q1": 1.2774999999999999,
+      "q3": 2.045,
+      "min": 0.0,
+      "max": 2.68
+    },
+    {
+      "landmark": "Lower lip",
+      "method": "2D",
+      "n": 10,
+      "mean": 4.430000000000001,
+      "sd": 2.059153008183489,
+      "ci_low": 2.9569706751456737,
+      "ci_high": 5.9030293248543275,
+      "median": 4.85,
+      "q1": 3.575,
+      "q3": 5.625,
+      "min": 0.0,
+      "max": 7.3
+    },
+    {
+      "landmark": "Lower lip",
+      "method": "3D",
+      "n": 10,
+      "mean": 2.3280000000000003,
+      "sd": 2.3256005198180056,
+      "ci_low": 0.6643656076192224,
+      "ci_high": 3.991634392380778,
+      "median": 1.52,
+      "q1": 0.84,
+      "q3": 3.4699999999999998,
+      "min": 0.0,
+      "max": 6.59
+    },
+    {
+      "landmark": "Soft-tissue pogonion",
+      "method": "2D",
+      "n": 10,
+      "mean": 4.89,
+      "sd": 3.940798001533305,
+      "ci_low": 2.070922934567756,
+      "ci_high": 7.709077065432243,
+      "median": 4.9,
+      "q1": 1.65,
+      "q3": 6.15,
+      "min": 0.0,
+      "max": 12.1
+    },
+    {
+      "landmark": "Soft-tissue pogonion",
+      "method": "3D",
+      "n": 10,
+      "mean": 4.904,
+      "sd": 4.801308155076073,
+      "ci_low": 1.4693510535730607,
+      "ci_high": 8.33864894642694,
+      "median": 3.865,
+      "q1": 0.6475,
+      "q3": 8.307500000000001,
+      "min": 0.0,
+      "max": 12.09
+    },
+    {
+      "landmark": "Overall (patient mean)",
+      "method": "2D",
+      "n": 10,
+      "mean": 4.106,
+      "sd": 1.9786051952116466,
+      "ci_low": 2.690591109415913,
+      "ci_high": 5.521408890584087,
+      "median": 4.113333333333333,
+      "q1": 2.966666666666667,
+      "q3": 5.683333333333334,
+      "min": 0.8666666666666667,
+      "max": 6.966666666666666
+    },
+    {
+      "landmark": "Overall (patient mean)",
+      "method": "3D",
+      "n": 10,
+      "mean": 2.953333333333334,
+      "sd": 2.4021276577131823,
+      "ci_low": 1.234954724365072,
+      "ci_high": 4.671711942301596,
+      "median": 2.5016666666666665,
+      "q1": 0.9474999999999999,
+      "q3": 5.205,
+      "min": 0.0,
+      "max": 6.303333333333334
+    }
+  ],
+  "paired": [
+    {
+      "landmark": "Upper lip",
+      "n": 10,
+      "mean_diff": 1.3699999999999999,
+      "sd_diff": 1.3532512290365335,
+      "ci_low": 0.4019423877954259,
+      "ci_high": 2.3380576122045738,
+      "t": 3.2014161904845535,
+      "df": 9,
+      "p_t": 0.010806715999360525,
+      "shapiro_W": 0.9396922398216022,
+      "p_shapiro": 0.5495939388965808,
+      "wilcoxon_W": 3.0,
+      "p_wilcoxon": 0.009765625,
+      "cohen_dz": 1.012376690007066,
+      "n_3d_smaller": 8,
+      "n_equal": 0,
+      "n_2d_smaller": 2,
+      "loa_low": -1.2823724089116058,
+      "loa_high": 4.022372408911606,
+      "p_t_holm": 0.02161343199872105
+    },
+    {
+      "landmark": "Lower lip",
+      "n": 10,
+      "mean_diff": 2.102,
+      "sd_diff": 1.4720190216162292,
+      "ci_low": 1.048981027166649,
+      "ci_high": 3.155018972833351,
+      "t": 4.515639773714081,
+      "df": 9,
+      "p_t": 0.0014558742195483535,
+      "shapiro_W": 0.9059793692952844,
+      "p_shapiro": 0.25449904211979113,
+      "wilcoxon_W": 1.0,
+      "p_wilcoxon": 0.0078125,
+      "cohen_dz": 1.4279706777783836,
+      "n_3d_smaller": 8,
+      "n_equal": 1,
+      "n_2d_smaller": 1,
+      "loa_low": -0.7831572823678092,
+      "loa_high": 4.987157282367809,
+      "p_t_holm": 0.00436762265864506
+    },
+    {
+      "landmark": "Soft-tissue pogonion",
+      "n": 10,
+      "mean_diff": -0.014000000000000101,
+      "sd_diff": 5.477238152370023,
+      "ci_low": -3.9321801379439,
+      "ci_high": 3.9041801379438996,
+      "t": -0.008082885207976762,
+      "df": 9,
+      "p_t": 0.993727192642608,
+      "shapiro_W": 0.9365022130619954,
+      "p_shapiro": 0.5147883533693621,
+      "wilcoxon_W": 21.0,
+      "p_wilcoxon": 0.91015625,
+      "cohen_dz": -0.002556032732289036,
+      "n_3d_smaller": 5,
+      "n_equal": 1,
+      "n_2d_smaller": 4,
+      "loa_low": -10.749386778645244,
+      "loa_high": 10.721386778645245,
+      "p_t_holm": 0.993727192642608
+    },
+    {
+      "landmark": "Overall (patient mean)",
+      "n": 10,
+      "mean_diff": 1.1526666666666663,
+      "sd_diff": 2.242699982136831,
+      "ci_low": -0.45166425357520246,
+      "ci_high": 2.7569975869085352,
+      "t": 1.6252963297158305,
+      "df": 9,
+      "p_t": 0.1385448320862272,
+      "shapiro_W": 0.9017641861337501,
+      "p_shapiro": 0.22906298249710388,
+      "wilcoxon_W": 10.0,
+      "p_wilcoxon": 0.083984375,
+      "cohen_dz": 0.5139638274614032,
+      "n_3d_smaller": 8,
+      "n_equal": 0,
+      "n_2d_smaller": 2,
+      "loa_low": -3.243025298321522,
+      "loa_high": 5.548358631654855
+    }
+  ],
+  "correlation": [
+    {
+      "landmark": "Upper lip",
+      "n": 10,
+      "pearson_r": 0.10490755766168017,
+      "p_pearson": 0.7730237059570814,
+      "spearman_rho": 0.05454545454545454,
+      "p_spearman": 0.8810361811618526
+    },
+    {
+      "landmark": "Lower lip",
+      "n": 10,
+      "pearson_r": 0.7811706448104981,
+      "p_pearson": 0.007630559291053004,
+      "spearman_rho": 0.9240164263936983,
+      "p_spearman": 0.00013295265816009046
+    },
+    {
+      "landmark": "Soft-tissue pogonion",
+      "n": 10,
+      "pearson_r": 0.2267934477777285,
+      "p_pearson": 0.5286290599241255,
+      "spearman_rho": 0.5106406566912542,
+      "p_spearman": 0.13150199306594582
+    },
+    {
+      "landmark": "Overall (patient mean)",
+      "n": 10,
+      "pearson_r": 0.48974621342630137,
+      "p_pearson": 0.15077048268266063,
+      "spearman_rho": 0.4666666666666666,
+      "p_spearman": 0.17393859716506654
+    }
+  ],
+  "acceptability": [
+    {
+      "landmark": "Upper lip",
+      "n": 10,
+      "ok_2d": 2,
+      "ok_3d": 7,
+      "only_2d": 1,
+      "only_3d": 6,
+      "p_mcnemar": 0.125
+    },
+    {
+      "landmark": "Lower lip",
+      "n": 10,
+      "ok_2d": 1,
+      "ok_3d": 6,
+      "only_2d": 0,
+      "only_3d": 5,
+      "p_mcnemar": 0.0625
+    },
+    {
+      "landmark": "Soft-tissue pogonion",
+      "n": 10,
+      "ok_2d": 3,
+      "ok_3d": 5,
+      "only_2d": 1,
+      "only_3d": 3,
+      "p_mcnemar": 0.625
+    },
+    {
+      "landmark": "All predictions",
+      "n": 30,
+      "ok_2d": 6,
+      "ok_3d": 18,
+      "only_2d": 2,
+      "only_3d": 14,
+      "p_mcnemar": null
+    }
+  ],
+  "between_landmarks": {
+    "2D": {
+      "n": 10,
+      "chi2": 4.6666666666666785,
+      "df": 2,
+      "p": 0.09697196786440448,
+      "posthoc": [
+        {
+          "pair": "Upper lip vs Lower lip",
+          "p_raw": 0.048828125,
+          "p_bonferroni": 0.146484375
+        },
+        {
+          "pair": "Upper lip vs Soft-tissue pogonion",
+          "p_raw": 0.232421875,
+          "p_bonferroni": 0.697265625
+        },
+        {
+          "pair": "Lower lip vs Soft-tissue pogonion",
+          "p_raw": 1.0,
+          "p_bonferroni": 1.0
+        }
+      ]
+    },
+    "3D": {
+      "n": 10,
+      "chi2": 5.705882352941186,
+      "df": 2,
+      "p": 0.05767444046591749,
+      "posthoc": [
+        {
+          "pair": "Upper lip vs Lower lip",
+          "p_raw": 0.84375,
+          "p_bonferroni": 1.0
+        },
+        {
+          "pair": "Upper lip vs Soft-tissue pogonion",
+          "p_raw": 0.07421875,
+          "p_bonferroni": 0.22265625
+        },
+        {
+          "pair": "Lower lip vs Soft-tissue pogonion",
+          "p_raw": 0.0234375,
+          "p_bonferroni": 0.0703125
+        }
+      ]
+    }
+  },
+  "movement_correlation": [
+    {
+      "landmark": "Upper lip",
+      "movement": "Maxillary advancement",
+      "method": "2D",
+      "n": 10,
+      "spearman_rho": 0.2538952735230717,
+      "p": 0.4790429705391827
+    },
+    {
+      "landmark": "Upper lip",
+      "movement": "Maxillary advancement",
+      "method": "3D",
+      "n": 10,
+      "spearman_rho": 0.0130202704370806,
+      "p": 0.9715229863815268
+    },
+    {
+      "landmark": "Lower lip",
+      "movement": "Mandibular setback",
+      "method": "2D",
+      "n": 10,
+      "spearman_rho": 0.04525557286846651,
+      "p": 0.9012059369093487
+    },
+    {
+      "landmark": "Lower lip",
+      "movement": "Mandibular setback",
+      "method": "3D",
+      "n": 10,
+      "spearman_rho": 0.2529057374337588,
+      "p": 0.4808168017349565
+    },
+    {
+      "landmark": "Soft-tissue pogonion",
+      "movement": "Genioplasty advancement",
+      "method": "2D",
+      "n": 10,
+      "spearman_rho": 0.05627748595326502,
+      "p": 0.8772821581180905
+    },
+    {
+      "landmark": "Soft-tissue pogonion",
+      "movement": "Genioplasty advancement",
+      "method": "3D",
+      "n": 10,
+      "spearman_rho": 0.10662551658389312,
+      "p": 0.7693903862932518
+    }
+  ],
+  "settings": {
+    "acceptable_mm": 2.0,
+    "alpha": 0.05
+  },
+  "versions": {
+    "python": "3.13.17",
+    "scipy": "1.18.1",
+    "statsmodels": "0.15.0",
+    "pandas": "3.0.5"
+  }
+}

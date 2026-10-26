@@ -29,6 +29,7 @@ import openpyxl
 import pandas as pd
 from scipy import stats
 from statsmodels.stats.contingency_tables import mcnemar
+from statsmodels.stats.multitest import multipletests
 
 LANDMARKS = ["Upper lip", "Lower lip", "Soft-tissue pogonion"]
 LANDMARK_LABELS = {"U lip": "Upper lip", "L lip": "Lower lip", "pogonion": "Soft-tissue pogonion"}
@@ -133,6 +134,9 @@ def paired_comparison(a, b):
         "wilcoxon_W": w.statistic,
         "p_wilcoxon": w.pvalue,
         "cohen_dz": d.mean() / sd if sd > 0 else np.nan,
+        "n_3d_smaller": int(np.sum(d > 0)),
+        "n_equal": int(np.sum(d == 0)),
+        "n_2d_smaller": int(np.sum(d < 0)),
         "loa_low": d.mean() - 1.96 * sd,
         "loa_high": d.mean() + 1.96 * sd,
     }
@@ -150,7 +154,7 @@ def correlation(a, b):
     }
 
 
-def acceptability(a, b):
+def acceptability(a, b, test=True):
     """Share of predictions within the clinical threshold; exact McNemar test."""
     ok_2d = np.asarray(a) <= ACCEPTABLE_MM
     ok_3d = np.asarray(b) <= ACCEPTABLE_MM
@@ -164,7 +168,7 @@ def acceptability(a, b):
         "ok_3d": int(ok_3d.sum()),
         "only_2d": table[0][1],
         "only_3d": table[1][0],
-        "p_mcnemar": mcnemar(table, exact=True).pvalue,
+        "p_mcnemar": mcnemar(table, exact=True).pvalue if test else None,
     }
 
 
@@ -187,7 +191,7 @@ def between_landmarks(wide):
 
 
 def analyse(df):
-    """Run every per-landmark analysis on one dataset (primary or sensitivity)."""
+    """Run every analysis reported in the results chapter."""
     out = {"descriptive": [], "paired": [], "correlation": [], "acceptability": []}
     for lm in LANDMARKS:
         sub = df[df["landmark"] == lm]
@@ -198,24 +202,28 @@ def analyse(df):
         out["correlation"].append({"landmark": lm, **correlation(a, b)})
         out["acceptability"].append({"landmark": lm, **acceptability(a, b)})
 
-    # Overall error per patient: mean of the three landmarks (patients with all three).
-    counts = df.groupby("patient", observed=True)["landmark"].nunique()
-    complete = df[df["patient"].isin(counts[counts == len(LANDMARKS)].index)]
-    per_patient = complete.groupby("patient", observed=True)[["error_2d", "error_3d"]].mean()
+    # Holm correction across the three landmark comparisons.
+    holm = multipletests([r["p_t"] for r in out["paired"]], method="holm")[1]
+    for r, p in zip(out["paired"], holm):
+        r["p_t_holm"] = p
+
+    # Overall error per patient: mean of the three landmarks.
+    per_patient = df.groupby("patient", observed=True)[["error_2d", "error_3d"]].mean()
     a, b = per_patient["error_2d"], per_patient["error_3d"]
     out["descriptive"].append({"landmark": "Overall (patient mean)", "method": "2D", **describe(a)})
     out["descriptive"].append({"landmark": "Overall (patient mean)", "method": "3D", **describe(b)})
     out["paired"].append({"landmark": "Overall (patient mean)", **paired_comparison(a, b)})
     out["correlation"].append({"landmark": "Overall (patient mean)", **correlation(a, b)})
 
-    # All landmark predictions pooled, for the acceptability summary only.
+    # All landmark predictions pooled: descriptive only, since the three
+    # landmarks of one patient are not independent observations.
     out["acceptability"].append(
-        {"landmark": "All predictions", **acceptability(df["error_2d"], df["error_3d"])}
+        {"landmark": "All predictions", **acceptability(df["error_2d"], df["error_3d"], test=False)}
     )
 
     out["between_landmarks"] = {}
     for method, col in (("2D", "error_2d"), ("3D", "error_3d")):
-        wide = complete.pivot(index="patient", columns="landmark", values=col)
+        wide = df.pivot(index="patient", columns="landmark", values=col)
         out["between_landmarks"][method] = between_landmarks(wide)
 
     out["movement_correlation"] = []
@@ -349,17 +357,9 @@ def main(xlsx, out_dir):
     df = read_workbook(xlsx)
     df.to_csv(out_dir / "data_tidy.csv", index=False)
 
-    # Sensitivity: a recorded 0.00 mm is treated as "not measured" and the pair dropped.
-    zero = (df["error_2d"] == 0) | (df["error_3d"] == 0)
-    sens_df = df[~zero]
-
     results = {
         "sample": sample_summary(df),
-        "primary": analyse(df),
-        "sensitivity": analyse(sens_df),
-        "excluded_in_sensitivity": df.loc[zero, ["patient", "landmark", "error_2d", "error_3d"]]
-        .astype({"landmark": str})
-        .to_dict("records"),
+        **analyse(df),
         "settings": {"acceptable_mm": ACCEPTABLE_MM, "alpha": ALPHA},
         "versions": {
             "python": sys.version.split()[0],
@@ -372,21 +372,19 @@ def main(xlsx, out_dir):
 
     with pd.ExcelWriter(out_dir / "results.xlsx") as xw:
         df.to_excel(xw, sheet_name="Data (anonymised)", index=False)
-        for key in ("primary", "sensitivity"):
-            r = results[key]
-            pd.DataFrame(r["descriptive"]).to_excel(xw, sheet_name=f"{key} descriptive", index=False)
-            pd.DataFrame(r["paired"]).to_excel(xw, sheet_name=f"{key} 2D vs 3D", index=False)
-            pd.DataFrame(r["correlation"]).to_excel(xw, sheet_name=f"{key} correlation", index=False)
-            pd.DataFrame(r["acceptability"]).to_excel(xw, sheet_name=f"{key} within 2mm", index=False)
-            rows = []
-            for method, bl in r["between_landmarks"].items():
-                for ph in bl["posthoc"]:
-                    rows.append({"method": method, "friedman_chi2": bl["chi2"], "p_friedman": bl["p"], **ph})
-            pd.DataFrame(rows).to_excel(xw, sheet_name=f"{key} landmarks", index=False)
-            pd.DataFrame(r["movement_correlation"]).to_excel(xw, sheet_name=f"{key} movement", index=False)
+        pd.DataFrame(results["descriptive"]).to_excel(xw, sheet_name="Descriptive", index=False)
+        pd.DataFrame(results["paired"]).to_excel(xw, sheet_name="2D vs 3D", index=False)
+        pd.DataFrame(results["correlation"]).to_excel(xw, sheet_name="Correlation", index=False)
+        pd.DataFrame(results["acceptability"]).to_excel(xw, sheet_name="Within 2 mm", index=False)
+        rows = []
+        for method, bl in results["between_landmarks"].items():
+            for ph in bl["posthoc"]:
+                rows.append({"method": method, "friedman_chi2": bl["chi2"], "p_friedman": bl["p"], **ph})
+        pd.DataFrame(rows).to_excel(xw, sheet_name="Between landmarks", index=False)
+        pd.DataFrame(results["movement_correlation"]).to_excel(xw, sheet_name="Movement vs error", index=False)
 
     fig_paired(df, out_dir / "fig1_paired.png")
-    fig_scatter(df, results["primary"]["correlation"], out_dir / "fig2_scatter.png")
+    fig_scatter(df, results["correlation"], out_dir / "fig2_scatter.png")
     print(f"Wrote results for {df['patient'].nunique()} patients to {out_dir}")
 
 
