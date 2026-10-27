@@ -192,8 +192,8 @@ const changes = [
     `Apical protrusions were more frequent among Malay patients, although the overall association with ethnicity was not significant (p = ${f(TOT.p, 3)}).`,
     "The current wording is already correct; this version states the p-value."),
   ...change(7, "Methods, Statistical analysis (add after “…where significant differences were detected.”)", null,
-    "Within tooth groups, the association between ethnicity and vertical sinus relationship was tested with the Fisher–Freeman–Halton exact test; for all tooth groups pooled, the chi-square test was used because all expected counts were ≥ 5. In the figures, proportions are shown with 95% confidence intervals calculated by the Wilson score method.",
-    "Names the test behind the new total-row p-value and the confidence intervals in Figures 2–3."),
+    "Within tooth groups, the association between ethnicity and vertical sinus relationship was tested with the Fisher–Freeman–Halton exact test; for all tooth groups pooled, the chi-square test was used because all expected counts were ≥ 5. Changes in prevalence across age groups were assessed with the chi-square test for trend. In the figures, proportions are shown with 95% confidence intervals calculated by the Wilson score method.",
+    "Names the tests behind the new total-row p-value and the age-trend p-values (change 13), and the confidence intervals in Figures 2–3."),
   ...change(8, "Limitations (add at the end of the paragraph)", null,
     "In addition, the Indian subgroup was small (17 patients; 59 roots), so comparisons involving this group have limited precision. Analyses were performed at tooth and root level, and several teeth and roots came from the same patient; because these observations are not fully independent, p-values may be somewhat optimistic.",
     "Reviewers commonly raise both points."),
@@ -206,16 +206,24 @@ const changes = [
   bullet([text("Figure 5 is cited in change 2.")]),
   new Paragraph({ spacing: { before: 200, after: 80 }, keepNext: true, children: [text("10. Figure legends", { bold: true })] }),
   para([text("Add the legends of Figures 2–5 (section 4) below each figure. Place each figure after the paragraph that first cites it, or at the end of the manuscript if the journal asks for figures separately, and upload the TIFF files as the figure files.")], { indent: { left: 360 } }),
+  ...change(11, "Results, root fenestration (wording of the tooth-group test)",
+    "First premolars are significantly more affected than second premolars (χ² test, p = 0.024).",
+    "RF prevalence differed among tooth groups (χ² test, p = 0.024); post hoc comparison showed that first premolars were more affected than second premolars.",
+    "p = 0.024 is the overall test across the four tooth groups, not the first-versus-second premolar comparison."),
+  ...change(12, "Results, dehiscence severity",
+    "…with mild defects being the most frequent observation (100/188, 53.5%).",
+    "…with mild defects being the most frequent observation (100/187, 53.5%).",
+    "Table 4 totals 187 root surfaces, and 100/187 is the 53.5% reported."),
+  ...change(13, "Results, Table 2 and Table 5 sentences (age trend)",
+    "…broadly comparable across age strata (17.65%-23.26%), peaking… / …to 37/70 (52.86%) in the >50 group.",
+    `…broadly comparable across age strata (17.65%-23.26%; χ² test for trend, p = ${f(trend.rf_trend.p, 3)}), peaking… / …to 37/70 (52.86%) in the >50 group (χ² test for trend, p < 0.001).`,
+    `The Abstract and Conclusions state that dehiscence increased with age but no test was reported. From the Table 2 and 5 totals: dehiscence χ²(1) = ${f(trend.deh_trend.chi2, 2)}, p < 0.001; RF χ²(1) = ${f(trend.rf_trend.chi2, 2)}, p = ${f(trend.rf_trend.p, 3)}.`),
 ];
 
-const otherIssues = [
+const openIssues = [
   bullet([text("Table 7 and Table 9 disagree in three cells: ", { bold: true }),
-    text("first premolars Type 1 (22 vs 21), first molars Type 0 (51 vs 50) and second molars Type 1 (33 vs 35); tooth-group totals 243/207/108 vs 242/206/110. Both total 711. Figure 4 uses Table 7 and Figure 5 uses Table 9 as published; once the counts are reconciled, the figures can be redrawn in a minute.")]),
-  bullet([text("Dehiscence severity: ", { bold: true }), text("“mild defects being the most frequent observation (100/188, 53.5%)” should read 100/187, which matches Table 4 and the 53.5%.")]),
-  bullet([text("Gender and first premolars: ", { bold: true }), text("χ²(3) = 12.18, p = 0.007 could not be reproduced from the gender counts in the statistics workbook (11.38, p = 0.010; still significant). Please check against the SPSS output.")]),
-  bullet([text("Root fenestration by tooth group (optional wording): ", { bold: true }), text("p = 0.024 is the overall test across the four tooth groups. Suggested: “RF prevalence differed among tooth groups (χ² test, p = 0.024); post hoc comparison showed that first premolars were more affected than second premolars.”")]),
-  bullet([text("Age gradient (optional test): ", { bold: true }),
-    text(`the Abstract states that dehiscence increased with age but no test is reported. From the Table 2 and 5 totals, a chi-square test for trend gives χ²(1) = ${f(trend.deh_trend.chi2, 2)}, p < 0.001 for dehiscence and χ²(1) = ${f(trend.rf_trend.chi2, 2)}, p = ${f(trend.rf_trend.p, 3)} for RF. These could be added to the Table 2 and Table 5 sentences.`)]),
+    text("first premolars Type 1 (22 vs 21), first molars Type 0 (51 vs 50) and second molars Type 1 (33 vs 35); tooth-group totals 243/207/108 vs 242/206/110. Both total 711. Table 9 matches the SPSS ethnicity output, and the SPSS root-level output also has 21 for first premolars Type 1, so Table 7 is the likelier one to be wrong. Figure 4 uses Table 7 and Figure 5 uses Table 9 as published; once the counts are reconciled, the figures can be redrawn in a minute. (Comment on the Table 7 title.)")]),
+  bullet([text("Gender and first premolars: ", { bold: true }), text("χ²(3) = 12.18, p = 0.007 could not be reproduced from the gender counts in the statistics workbook (χ²(3) = 11.38, p = 0.010; still significant). Those counts also sum to Type 2 = 21 where Table 7 has 20. Please check against the SPSS output. (Comment on the χ² value in the Results.)")]),
 ];
 
 const doc = new Document({
@@ -243,6 +251,7 @@ const doc = new Document({
       bullet([text("Discussion p-value: ", { bold: true }), text("χ²(6) = 18.94, p = 0.004 cannot be reproduced from any version of the counts. It came from an earlier, error-flagged ethnicity table in the statistics workbook and should be replaced (change 3).")]),
       bullet([text("Table 9 corrections: ", { bold: true }), text("one superscript letter (second molars, Chinese, Type 0: b → a, as in the SPSS output) and two typos.")]),
       bullet([text("Figures 2–5: ", { bold: true }), text("drawn from the published tables only; no raw data were used. Files are supplied as 600 dpi TIFF and PNG and as vector PDF.")]),
+      bullet([text("Tracked manuscript: ", { bold: true }), text("changes 1–13 are applied as tracked changes (author “Claude”) in the manuscript copy, with Figures 2–5 and their legends inserted. The two items that need the SPSS output are Word comments (end of section 3).")]),
       bullet([text("Checks: ", { bold: true }), text(`the four tooth-group p-values in Table 9 were re-computed with the Fisher–Freeman–Halton exact test (Monte Carlo, ${R.settings.mc_simulations.toLocaleString("en-US")} samples) and agree with the reported values: ${GROUPS.map((g) => f(T9[g].ffh_exact_mc, 3)).join(", ")} vs ${GROUPS.map((g) => f(T9[g].p_reported, 3)).join(", ")}.`)]),
 
       h1("2. Revised Table 9", true),
@@ -255,8 +264,8 @@ const doc = new Document({
       h1("3. Changes to the manuscript", true),
       ...changes,
 
-      h2("Other inconsistencies to check (not changed)"),
-      ...otherIssues,
+      h2("Left as comments in the manuscript (need the SPSS output)"),
+      ...openIssues,
 
       h1("4. Figures 2–5", true),
       ...figure("fig2_alveolar_by_tooth", 2, CAPTIONS[2]),
