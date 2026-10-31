@@ -257,7 +257,7 @@ const doc = new Document({
       bullet([text("Discussion p-value: ", { bold: true }), text("χ²(6) = 18.94, p = 0.004 cannot be reproduced from any version of the counts. It came from an earlier, error-flagged ethnicity table in the statistics workbook and should be replaced (change 3).")]),
       bullet([text("Table 9 corrections: ", { bold: true }), text("one superscript letter (second molars, Chinese, Type 0: b → a, as in the SPSS output) and two typos.")]),
       bullet([text("Figures 2–5: ", { bold: true }), text("drawn from the published tables only; no raw data were used. Files are supplied as 600 dpi TIFF and PNG and as vector PDF.")]),
-      bullet([text("Tracked manuscript: ", { bold: true }), text("changes 1–15 are applied as tracked changes (author “Claude”) in the manuscript copy, with Figures 2–5 and their legends inserted. The two items that need the SPSS output are Word comments (end of section 3).")]),
+      bullet([text("Tracked manuscript: ", { bold: true }), text("changes 1–15 are applied as tracked changes in the manuscript copy, with Figures 2–5 and their legends inserted. The two items that need the SPSS output are Word comments (end of section 3).")]),
       bullet([text("Checks: ", { bold: true }), text(`the four tooth-group p-values in Table 9 were re-computed with the Fisher–Freeman–Halton exact test (Monte Carlo, ${R.settings.mc_simulations.toLocaleString("en-US")} samples) and agree with the reported values: ${GROUPS.map((g) => f(T9[g].ffh_exact_mc, 3)).join(", ")} vs ${GROUPS.map((g) => f(T9[g].p_reported, 3)).join(", ")}.`)]),
 
       h1("2. Revised Table 9", true),
