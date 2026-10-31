@@ -218,12 +218,18 @@ const changes = [
     "…broadly comparable across age strata (17.65%-23.26%), peaking… / …to 37/70 (52.86%) in the >50 group.",
     `…broadly comparable across age strata (17.65%-23.26%; χ² test for trend, p = ${f(trend.rf_trend.p, 3)}), peaking… / …to 37/70 (52.86%) in the >50 group (χ² test for trend, p < 0.001).`,
     `The Abstract and Conclusions state that dehiscence increased with age but no test was reported. From the Table 2 and 5 totals: dehiscence χ²(1) = ${f(trend.deh_trend.chi2, 2)}, p < 0.001; RF χ²(1) = ${f(trend.rf_trend.chi2, 2)}, p = ${f(trend.rf_trend.p, 3)}.`),
+  ...change(14, "Table 7 and its Results sentence (corrected to agree with Table 9)", null,
+    "Table 7 now uses the tooth-group sums of Table 9: first premolars 194/21/20/7 (242), second premolars 59/34/35/25 (153), first molars 50/38/56/62 (206), second molars 35/35/16/24 (110); Type totals 338/128/127/118 (711). Percentages and post hoc letters were recalculated; the Type 1 letters change to first premolars a, second premolars bc, first molars b, second molars c. Results: “Overall, Type 0 was most common (338/711, 47.5%), followed by Type 1 (128/711, 18.0%), Type 2 (127/711, 17.9%) and Type 3 (118/711, 16.6%).” Discussion: first molars Type 2+3 = 57.3% (118/206). Figure 4 is redrawn from the corrected table.",
+    "Table 9 matches the SPSS output and is taken as correct. The letter method reproduces every letter of the original Table 7 when run on its original counts. The tooth-group test stays p < 0.001 (χ²(9) = 188.00)."),
+  ...change(15, "Results, gender and first premolars",
+    "…for first premolars only (χ²(3)=12.18, p=0.007). Males had a higher proportion of Types 2–3 (23/130, 17.7%) than females (5/113, 4.4%), while females showed a higher proportion of Type 0 (99/113, 87.6%) than males (95/130, 73.1%).",
+    "…for first premolars only (χ²(3) = 12.45, p = 0.006). Males had a higher proportion of Types 2–3 (22/129, 17.1%) than females (5/113, 4.4%), while females showed a higher proportion of Type 0 (99/113, 87.6%) than males (95/129, 73.6%).",
+    "The old counts summed to 243 roots. Rebuilt to agree with Table 9 (242): males 95/12/18/4 (n = 129, as in the statistics workbook), females 99/9/2/3 (n = 113; the Type 2/Type 3 split is inferred from the Table 9 totals). Two cells have expected counts < 5; the exact test gives p = 0.003. Still significant."),
 ];
 
 const openIssues = [
-  bullet([text("Table 7 and Table 9 disagree in three cells: ", { bold: true }),
-    text("first premolars Type 1 (22 vs 21), first molars Type 0 (51 vs 50) and second molars Type 1 (33 vs 35); tooth-group totals 243/207/108 vs 242/206/110. Both total 711. Table 9 matches the SPSS ethnicity output, and the SPSS root-level output also has 21 for first premolars Type 1, so Table 7 is the likelier one to be wrong. Figure 4 uses Table 7 and Figure 5 uses Table 9 as published; once the counts are reconciled, the figures can be redrawn in a minute. (Comment on the Table 7 title.)")]),
-  bullet([text("Gender and first premolars: ", { bold: true }), text("χ²(3) = 12.18, p = 0.007 could not be reproduced from the gender counts in the statistics workbook (χ²(3) = 11.38, p = 0.010; still significant). Those counts also sum to Type 2 = 21 where Table 7 has 20. Please check against the SPSS output. (Comment on the χ² value in the Results.)")]),
+  bullet([text("Table 8 totals: ", { bold: true }), text("Table 8 still has Type 0 = 339 and Type 1 = 127, whereas Tables 7 and 9 now give 338 and 128. One root counted as Type 0 there should be Type 1, but its age group cannot be told from the tables. (Comment on the Table 8 title.)")]),
+  bullet([text("Gender split for females: ", { bold: true }), text("the female Type 2/Type 3 split (2/3) in change 15 is inferred; please confirm it against the SPSS output. (Comment on the χ² value in the Results.)")]),
 ];
 
 const doc = new Document({
@@ -251,7 +257,7 @@ const doc = new Document({
       bullet([text("Discussion p-value: ", { bold: true }), text("χ²(6) = 18.94, p = 0.004 cannot be reproduced from any version of the counts. It came from an earlier, error-flagged ethnicity table in the statistics workbook and should be replaced (change 3).")]),
       bullet([text("Table 9 corrections: ", { bold: true }), text("one superscript letter (second molars, Chinese, Type 0: b → a, as in the SPSS output) and two typos.")]),
       bullet([text("Figures 2–5: ", { bold: true }), text("drawn from the published tables only; no raw data were used. Files are supplied as 600 dpi TIFF and PNG and as vector PDF.")]),
-      bullet([text("Tracked manuscript: ", { bold: true }), text("changes 1–13 are applied as tracked changes (author “Claude”) in the manuscript copy, with Figures 2–5 and their legends inserted. The two items that need the SPSS output are Word comments (end of section 3).")]),
+      bullet([text("Tracked manuscript: ", { bold: true }), text("changes 1–15 are applied as tracked changes (author “Claude”) in the manuscript copy, with Figures 2–5 and their legends inserted. The two items that need the SPSS output are Word comments (end of section 3).")]),
       bullet([text("Checks: ", { bold: true }), text(`the four tooth-group p-values in Table 9 were re-computed with the Fisher–Freeman–Halton exact test (Monte Carlo, ${R.settings.mc_simulations.toLocaleString("en-US")} samples) and agree with the reported values: ${GROUPS.map((g) => f(T9[g].ffh_exact_mc, 3)).join(", ")} vs ${GROUPS.map((g) => f(T9[g].p_reported, 3)).join(", ")}.`)]),
 
       h1("2. Revised Table 9", true),

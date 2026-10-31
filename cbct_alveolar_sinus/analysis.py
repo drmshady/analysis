@@ -58,12 +58,13 @@ TEETH_BY_AGE = [88, 125, 51, 43, 70]
 RF_BY_AGE = [17, 24, 9, 10, 16]
 DEH_BY_AGE = [7, 42, 22, 20, 37]
 
-# Table 7 as published (rows = tooth group, columns = Type 0-3).
+# Table 7 (rows = tooth group, columns = Type 0-3), corrected to the
+# tooth-group sums of Table 9, which matches the SPSS output.
 TABLE7 = {
-    "First premolars": [194, 22, 20, 7],
+    "First premolars": [194, 21, 20, 7],
     "Second premolars": [59, 34, 35, 25],
-    "First molars": [51, 38, 56, 62],
-    "Second molars": [35, 33, 16, 24],
+    "First molars": [50, 38, 56, 62],
+    "Second molars": [35, 35, 16, 24],
 }
 P_TABLE7 = "<0.001"
 
