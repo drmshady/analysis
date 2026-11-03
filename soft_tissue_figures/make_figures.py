@@ -26,6 +26,8 @@ plt.rcParams.update({
     "xtick.color": MUTED, "ytick.color": MUTED,
     "axes.grid": False, "grid.color": GRID, "grid.linewidth": 0.8,
     "legend.frameon": False, "savefig.dpi": 300, "savefig.bbox": "tight",
+    "mathtext.fontset": "custom", "mathtext.rm": "Inter", "mathtext.it": "Inter:italic",
+    "mathtext.bf": "Inter:bold",
 })
 
 LM = ["Upper lip", "Lower lip", "Soft-tissue\npogonion"]
@@ -44,7 +46,7 @@ def method_legend(fig, y=1.02, extra=()):
 
 
 def p_txt(p):
-    return "p < 0.001" if p < 0.001 else f"p = {p:.3f}"
+    return "$p$ < 0.001" if p < 0.001 else f"$p$ = {p:.3f}"
 
 
 # ---------------------------------------------------------------- Table 1
@@ -55,9 +57,9 @@ def fig_table1():
     mx = [6, 8, 5, 5, 6, 10, 6, 10, 6, 6]
     md = [4, 4, 9, 7, 6, 3, 4, 0, 4, 4]       # 0 = not performed
     gn = [4, 6, 0, 4, 5, 0, 6, 0, 4, 5]
-    series = [("Maxillary advancement", mx, "#2a78d6", "6.8 ± 1.9 mm (n = 10)"),
-              ("Mandibular setback", md, "#e8683f", "5.0 ± 1.9 mm (n = 9)"),
-              ("Genioplasty advancement", gn, "#3fa66b", "4.9 ± 0.9 mm (n = 7)")]
+    series = [("Maxillary advancement", mx, "#2a78d6", "6.8 ± 1.9 mm ($n$ = 10)"),
+              ("Mandibular setback", md, "#e8683f", "5.0 ± 1.9 mm ($n$ = 9)"),
+              ("Genioplasty advancement", gn, "#3fa66b", "4.9 ± 0.9 mm ($n$ = 7)")]
 
     fig, ax = plt.subplots(figsize=(10, 4.2))
     x = np.arange(10)
@@ -132,7 +134,7 @@ def fig_table3():
         ("Soft-tissue pogonion", -0.01, -3.93, 3.90, 0.994, 0.994, 0.910, 0.00),
         ("Overall (patient mean)", 1.15, -0.45, 2.76, 0.139, None, 0.084, 0.51),
     ]
-    fig, ax = plt.subplots(figsize=(10, 3.6))
+    fig, ax = plt.subplots(figsize=(11, 3.6))
     y = np.arange(len(rows))[::-1]
     for yi, (lab, m, lo, hi, p, holm, wx, dz) in zip(y, rows):
         sig = p < 0.05
@@ -145,15 +147,17 @@ def fig_table3():
                 fontweight="bold" if sig else "normal")
         ax.text(9.1, yi, "—" if holm is None else f"{holm:.3f}{'*' if holm < .05 else ''}",
                 va="center", fontsize=9, fontweight="bold" if holm and holm < .05 else "normal")
-        ax.text(10.3, yi, f"{dz:.2f}", va="center", fontsize=9)
+        ax.text(10.3, yi, f"{wx:.3f}{'*' if wx < .05 else ''}", va="center", fontsize=9,
+                fontweight="bold" if wx < .05 else "normal")
+        ax.text(11.95, yi, f"{dz:.2f}", va="center", fontsize=9)
     hy = len(rows) - 0.35
-    for xh, t in [(4.8, "Mean diff. (95% CI), mm"), (7.9, "p"), (9.1, "Holm p"), (10.3, "dz")]:
+    for xh, t in [(4.8, "Mean diff. (95% CI), mm"), (7.9, "$p$"), (9.1, "Holm $p$"), (10.3, "Wilcoxon $p$"), (11.95, "$d_z$")]:
         ax.text(xh, hy, t, fontsize=9, fontweight="semibold", color=MUTED)
     ax.axvline(0, color="#444", lw=1)
     ax.set_yticks(y, [r[0] for r in rows])
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
-    ax.set_xlim(-4.5, 10.9)
+    ax.set_xlim(-4.5, 12.5)
     ax.set_ylim(-0.6, len(rows) - 0.1)
     ax.set_xticks(np.arange(-4, 5, 1))
     ax.spines["bottom"].set_bounds(-4, 4)
@@ -161,7 +165,7 @@ def fig_table3():
     ax.set_xlabel("Mean difference, 2D − 3D (mm)", x=0.31)
     ax.text(-0.15, hy, "◀ 2D more accurate", ha="right", fontsize=8.5, color=MUTED)
     ax.text(0.15, hy, "3D more accurate ▶", ha="left", fontsize=8.5, color=MUTED)
-    ax.text(1.0, -0.2, "*p < 0.05 (paired t-test)", transform=ax.transAxes, ha="right",
+    ax.text(1.0, -0.2, "*$p$ < 0.05; colour = significant by paired $t$-test", transform=ax.transAxes, ha="right",
             fontsize=8, color=MUTED)
     save(fig, "Figure_T3_mean_difference_forest")
 
@@ -172,7 +176,7 @@ def fig_table4():
     pr = [0.773, 0.008, 0.529, 0.151]
     rho = [0.05, 0.92, 0.51, 0.47]
     prho = [0.881, 0.0005, 0.132, 0.174]
-    _corr_bars(LM4, r, pr, rho, prho, ("Pearson r", "Spearman ρ"), ("#2a78d6", "#8fb8ea"),
+    _corr_bars(LM4, r, pr, rho, prho, ("Pearson $r$", "Spearman $\\rho$"), ("#2a78d6", "#8fb8ea"),
                "Correlation coefficient (2D vs 3D error)", "Figure_T4_correlation_2D_3D",
                sep_after=2)
 
@@ -203,7 +207,7 @@ def _corr_bars(labels, a, pa, b, pb, names, cols, ylab, fname, sep_after=None):
     ax.set_ylabel(ylab)
     ax.tick_params(axis="x", length=0)
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.12), ncol=2)
-    ax.text(1.0, -0.17, "*p < 0.05", transform=ax.transAxes, ha="right", fontsize=8, color=MUTED)
+    ax.text(1.0, -0.17, "*$p$ < 0.05", transform=ax.transAxes, ha="right", fontsize=8, color=MUTED)
     save(fig, fname)
 
 
@@ -213,7 +217,7 @@ def fig_table5():
     n3 = [7, 6, 5, 18]
     N = [10, 10, 10, 30]
     pm = [0.125, 0.063, 0.625, None]
-    labels = LM + ["All predictions†\n(pooled, n = 30)"]
+    labels = LM + ["All predictions†\n(pooled, $n$ = 30)"]
     fig, ax = plt.subplots(figsize=(8.5, 4.2))
     x = np.arange(4)
     w = 0.34
@@ -225,7 +229,7 @@ def fig_table5():
             ax.text(xi, pc + 1.5, f"{pc:.0f}%\n{v}/{n}", ha="center", va="bottom", fontsize=8,
                     linespacing=1.0)
     for xi, p in zip(x, pm):
-        ax.text(xi, 92, "McNemar\n" + (f"p = {p:.3f}" if p else "not tested"), ha="center",
+        ax.text(xi, 92, "McNemar\n" + (f"$p$ = {p:.3f}" if p else "not tested"), ha="center",
                 va="center", fontsize=8, color=MUTED, linespacing=1.1)
     ax.axvline(2.5, color=GRID, lw=1)
     ax.set_xticks(x, labels)
@@ -252,16 +256,17 @@ def fig_table6():
             ax.add_patch(plt.Rectangle((xi - 0.22, q1), 0.44, q3 - q1, fc=c, alpha=0.22,
                                        ec=c, lw=1, zorder=2))
             ax.hlines(md, xi - 0.22, xi + 0.22, color=c, lw=2.5, zorder=3)
-            ax.text(xi + 0.27, md, f"{md:.2f}", va="center", fontsize=8.5, color=c)
+            ax.text(xi + 0.27, md, f"{md:.2f}", va="center", fontsize=8.5, color=c,
+                    bbox=dict(fc="white", ec="none", pad=0.6), zorder=4)
         # pairwise brackets
         pairs = [(0, 1), (0, 2), (1, 2)]
         ys = [9.6, 11.4, 10.5]
         for (i, j), yb, p in zip(pairs, ys, pw[m]):
             ax.plot([i, i, j, j], [yb - 0.2, yb, yb, yb - 0.2], color="#888", lw=0.8)
-            ax.text((i + j) / 2, yb + 0.1, f"p = {p:.3f}", ha="center", va="bottom", fontsize=7.5,
+            ax.text((i + j) / 2, yb + 0.1, f"$p$ = {p:.3f}", ha="center", va="bottom", fontsize=7.5,
                     color=MUTED)
         chi, p = fr[m]
-        ax.set_title(f"{m} planning\nFriedman χ²(2) = {chi:.2f}, p = {p:.3f}", color=c,
+        ax.set_title(f"{m} planning\nFriedman $\\chi^2$(2) = {chi:.2f}, $p$ = {p:.3f}", color=c,
                      fontsize=10.5)
         ax.axhline(2, ls="--", color="#444", lw=1, zorder=1)
         ax.set_xticks(x, LM)
@@ -271,7 +276,7 @@ def fig_table6():
         ax.tick_params(axis="x", length=0)
     axes[0].set_ylabel("Prediction error (mm), median (IQR)")
     axes[1].text(2.62, 2, "2 mm", va="center", fontsize=8.5, color=MUTED)
-    fig.text(0.99, -0.03, "Brackets: Bonferroni-adjusted pairwise Wilcoxon p values",
+    fig.text(0.99, -0.03, "Brackets: Bonferroni-adjusted pairwise Wilcoxon $p$ values",
              ha="right", fontsize=8, color=MUTED)
     save(fig, "Figure_T6_landmark_comparison_friedman")
 
@@ -288,15 +293,15 @@ def fig_table7():
         xs = x + (k - 0.5) * w
         ax.bar(xs, v, w * 0.92, color=c, zorder=3)
         for xi, vi, pi in zip(xs, v, p):
-            ax.text(xi, vi + 0.02, f"ρ = {vi:.2f}\np = {pi:.3f}", ha="center", va="bottom",
+            ax.text(xi, vi + 0.02, f"$\\rho$ = {vi:.2f}\n$p$ = {pi:.3f}", ha="center", va="bottom",
                     fontsize=8, linespacing=1.0)
     ax.axhspan(0, 0.3, color="#f4f4f4", zorder=0)
     ax.text(1.01, 0.15, "Weak", ha="left", va="center", fontsize=8, color=MUTED, style="italic",
             transform=ax.get_yaxis_transform())
     ax.set_xticks(x, labels)
     ax.set_xlim(-0.5, 2.6)
-    ax.set_ylim(0, 1.0)
-    ax.set_ylabel("Spearman ρ (planned movement\nvs prediction error)")
+    ax.set_ylim(0, 0.5)
+    ax.set_ylabel("Spearman $\\rho$ (planned movement\nvs prediction error)")
     ax.yaxis.grid(True, zorder=0)
     ax.tick_params(axis="x", length=0)
     method_legend(fig, y=1.04)
